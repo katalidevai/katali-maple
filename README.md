@@ -39,6 +39,21 @@ This keeps only the quantized LM-head matrix on CUDA; attention and routed
 experts still use Katali's native paths. It is opt-in because performance is
 hardware-dependent.
 
+For the fastest verified Maple configuration on the development RTX 4060, use
+native CUDA attention and the resident LM head together:
+
+```powershell
+$env:KATALI_CUDA_MOE = "1"
+$env:KATALI_DENSE_GPU = "1"
+$env:KATALI_DENSE_TIER = "attn,lm"
+$env:KATALI_MOE_ATTN_GPU = "1"
+$env:KATALI_MOE_LM_GPU = "1"
+```
+
+This keeps all 24 Maple attention layers and the LM head resident on CUDA.
+See [BENCHMARK.md](BENCHMARK.md) for the measured result and exact-output
+verification.
+
 ## Quick start
 
 When KATALI_API_MODEL is set, the API opens Maple once and reuses a persistent worker for sequential requests.
