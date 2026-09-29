@@ -16,7 +16,12 @@ The repository intentionally does not include engine source code, patches, model
 
 - Windows 10/11 x64
 - NVIDIA driver and an NVIDIA GPU for CUDA mode
-- Maple `maple-tq2_0.gguf` model downloaded separately
+- Maple `maple-tq2_0.gguf` model downloaded separately from the [Maple GGUF repository](https://huggingface.co/stamsam/maple-preview-gguf)
+
+## Model links
+
+- [Maple-Preview original model](https://huggingface.co/deepgrove/maple-preview)
+- [Maple-Preview GGUF conversions](https://huggingface.co/stamsam/maple-preview-gguf)
 
 The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with `KATALI_CUDA_MOE=1`.
 

@@ -2,6 +2,10 @@
 
 Katali exposes a loopback HTTP server with an OpenAI-compatible chat route.
 
+## Get the model
+
+Download `maple-tq2_0.gguf` from the [Maple-Preview GGUF repository](https://huggingface.co/stamsam/maple-preview-gguf). The original model card is [deepgrove/maple-preview](https://huggingface.co/deepgrove/maple-preview). Keep the model outside this release repository.
+
 ## 1. Start the server
 
 PowerShell:
