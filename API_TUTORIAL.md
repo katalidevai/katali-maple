@@ -20,6 +20,8 @@ $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
 
 The server binds to `127.0.0.1` only.
 
+The server loads the configured model once at startup and reuses the persistent native worker for subsequent requests.
+
 ## 2. Check health
 
 ```powershell

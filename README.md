@@ -27,6 +27,8 @@ The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with 
 
 ## Quick start
 
+When KATALI_API_MODEL is set, the API opens Maple once and reuses a persistent worker for sequential requests.
+
 ```powershell
 $env:KATALI_CUDA_MOE = "1"
 $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
