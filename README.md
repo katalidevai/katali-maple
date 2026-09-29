@@ -19,6 +19,7 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 ## Included
 
 - `katali-lab.exe` — native Katali engine and local HTTP API server
+- `katali-maple-gui.zip` — polished Windows desktop chat interface and Katali logo
 - `katali_cuda.dll` — optional native CUDA backend
 - `cudart64_13.dll` — CUDA runtime dependency
 - [API_TUTORIAL.md](API_TUTORIAL.md) — local OpenAI-compatible API instructions
@@ -38,6 +39,14 @@ The repository intentionally does not include engine source code, patches, model
 - [Maple-Preview GGUF conversions](https://huggingface.co/stamsam/maple-preview-gguf)
 
 The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with `KATALI_CUDA_MOE=1`.
+
+## Desktop GUI
+
+Install the .NET 9 Desktop Runtime, extract `katali-maple-gui.zip`, keep the
+GUI executable and `katali-logo.jpg` beside `katali-lab.exe`, then double-click
+the GUI. Choose `maple-tq2_0.gguf` from
+the model picker and use the Settings panel to enable the verified native CUDA
+attention and LM-head path.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:
