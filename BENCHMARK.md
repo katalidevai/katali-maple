@@ -1,4 +1,8 @@
-# Maple benchmark
+# Maple benchmark — **35.78 tok/s official result**
+
+The current official headline is **35.78 tok/s decode** using Katali's native
+CUDA attention path, routed MoE execution, and resident LM head on an RTX 4060.
+The generated output matches the CPU-attention baseline exactly.
 
 Measured on the development desktop:
 

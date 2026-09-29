@@ -1,4 +1,18 @@
-# Katali Maple Preview
+# Katali Maple Preview — **35.78 tok/s**
+
+## Verified headline result
+
+**35.78 tok/s decode on an NVIDIA RTX 4060** with Katali's native CUDA
+attention, routed MoE, and resident LM head. That is **3.5× faster** than the
+previous 10.20 tok/s CUDA configuration, with byte-identical output.
+
+```text
+Maple TQ2_0 · native Katali engine · RTX 4060 8 GB · 32-token decode
+35.78 tok/s · 24/24 attention layers on CUDA · exact output verified
+```
+
+See the complete [benchmark](BENCHMARK.md) and start with the optimized flags
+below.
 
 Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 
