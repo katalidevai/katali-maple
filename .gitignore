@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.md
+!API_TUTORIAL.md
+!BENCHMARK.md
+!katali-lab.exe
+!katali_cuda.dll
+!cudart64_13.dll
