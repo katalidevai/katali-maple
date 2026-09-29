@@ -25,6 +25,20 @@ The repository intentionally does not include engine source code, patches, model
 
 The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with `KATALI_CUDA_MOE=1`.
 
+For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
+resident path in addition to CUDA MoE:
+
+```powershell
+$env:KATALI_CUDA_MOE = "1"
+$env:KATALI_DENSE_GPU = "1"
+$env:KATALI_DENSE_TIER = "lm"
+$env:KATALI_MOE_LM_GPU = "1"
+```
+
+This keeps only the quantized LM-head matrix on CUDA; attention and routed
+experts still use Katali's native paths. It is opt-in because performance is
+hardware-dependent.
+
 ## Quick start
 
 When KATALI_API_MODEL is set, the API opens Maple once and reuses a persistent worker for sequential requests.
