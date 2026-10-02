@@ -14,6 +14,11 @@ Maple TQ2_0 · native Katali engine · RTX 4060 8 GB · 35-token decode
 See the complete [benchmark](BENCHMARK.md) and start with the optimized flags
 below.
 
+The runtime also contains a native LFM2-24B-A2B MoE path. Its Q4_K_M model
+needs about 14.4 GB on disk and uses roughly 2B active parameters per token;
+see the LFM2 section in [BENCHMARK.md](BENCHMARK.md) for the measured CUDA
+throughput and launch flags.
+
 Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 
 ## Included

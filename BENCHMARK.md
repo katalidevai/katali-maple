@@ -26,3 +26,25 @@ $env:KATALI_MOE_LM_GPU = "1"
 This is a warm-cache local measurement. Actual speed varies with hardware,
 context length, prompt, and cache state. Tool calls add extra generation
 round-trips, so their end-to-end response time is longer than one decode pass.
+
+## LFM2-24B-A2B measurement
+
+The native LFM2 path was also exercised with
+`C:\models\LFM2-24B-A2B-Q4_K_M.gguf` (24B total parameters, about 2B active,
+`lfm2moe` architecture). On the same RTX 4060, the best stable short decode
+measurement was **10.7 tok/s** using CUDA routed experts, the resident
+short-convolution projections, and asynchronous MoE execution disabled for
+this workload:
+
+```powershell
+$env:KATALI_CUDA_MOE = "1"
+$env:KATALI_DENSE_GPU = "1"
+$env:KATALI_CUDA_MOE_ASYNC = "0"
+.\katali-lab.exe generate C:\models\LFM2-24B-A2B-Q4_K_M.gguf `
+  "Capital of the Philippines?" --max 8 --ctx 512
+```
+
+The longer 16-token run measured 7.6 tok/s, so 10.7 tok/s is a short-run
+decode peak rather than a sustained 20 tok/s result. The limiting cost is
+streaming selected expert weights into the 8 GB GPU; reaching 20 tok/s needs a
+larger resident expert set or a fused LFM2 short-convolution/MoE CUDA path.
