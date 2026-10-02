@@ -1,14 +1,14 @@
-# Katali Maple Preview — **35.78 tok/s**
+# Katali Maple Preview — **26.485 tok/s**
 
 ## Verified headline result
 
-**35.78 tok/s decode on an NVIDIA RTX 4060** with Katali's native CUDA
-attention, routed MoE, and resident LM head. That is **3.5× faster** than the
-previous 10.20 tok/s CUDA configuration, with byte-identical output.
+**26.485 tok/s decode on an NVIDIA RTX 4060** with Katali's native CUDA
+attention, routed MoE, and resident LM head. This is the latest verified
+measurement for the current Maple runtime.
 
 ```text
-Maple TQ2_0 · native Katali engine · RTX 4060 8 GB · 32-token decode
-35.78 tok/s · 24/24 attention layers on CUDA · exact output verified
+Maple TQ2_0 · native Katali engine · RTX 4060 8 GB · 35-token decode
+26.485 tok/s · 24/24 attention layers on CUDA · exact output verified
 ```
 
 See the complete [benchmark](BENCHMARK.md) and start with the optimized flags
@@ -21,14 +21,15 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 - `katali-lab.exe` — native Katali engine and local HTTP API server
 - `katali-chat.exe` — lightweight native Windows desktop chat interface
 - `run-katali-chat.bat` — starts the API and opens the desktop chat
-- `gui-src/` — C source and build script for the desktop chat
 - `katali-maple-gui.zip` — original packaged GUI release
 - `katali_cuda.dll` — optional native CUDA backend
 - `cudart64_13.dll` — CUDA runtime dependency
 - [API_TUTORIAL.md](API_TUTORIAL.md) — local OpenAI-compatible API instructions
 - [BENCHMARK.md](BENCHMARK.md) — Maple CPU/CUDA measurements
 
-The repository intentionally does not include engine source code, patches, model weights, or the development checkout.
+The GitHub release contains compiled binaries and runtime documentation only.
+It does not include engine source code, GUI source code, patches, model weights,
+or the development checkout.
 
 ## Requirements
 
@@ -58,8 +59,6 @@ Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
 `run-katali-chat.bat`. The launcher starts the optimized API and opens the chat
 window. No Python, .NET runtime, browser, or separate GUI installation is
 required.
-
-To build the GUI from source with MinGW-w64, run `gui-src\build-chat.bat`.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:
