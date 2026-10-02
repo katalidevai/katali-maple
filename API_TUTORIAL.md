@@ -55,7 +55,7 @@ The generated text is returned in `choices[0].message.content`.
 Send an OpenAI-style `tools` array to enable the local tool loop. Katali lets
 Maple call a tool, executes it, sends the result back to Maple, and returns the
 final answer. The built-in tools are `calculator`, `list_files`, `read_file`,
-`create_file`, and `delete_file`.
+`edit_file`, `create_file`, and `delete_file`.
 
 Example:
 
@@ -91,6 +91,8 @@ Invoke-RestMethod `
 ```
 
 File tools are limited to the workspace directory containing the launcher.
+`edit_file` performs controlled search-and-replace and reports the replacement
+count. It accepts `path`, `find`, `replace`, and optional `replace_all` fields.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl

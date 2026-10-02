@@ -50,7 +50,7 @@ a conversation view, multiline prompt box, Send button, and Clear history
 button. It talks to the local OpenAI-compatible API on port `8119`.
 
 The chat sends the built-in Katali tools to Maple automatically. The available
-tools are calculator, list_files, read_file, create_file, and guarded
+tools are calculator, list_files, read_file, edit_file, create_file, and guarded
 delete_file. File tools are restricted to this project workspace, and deletion
 requires `confirm=true`.
 
