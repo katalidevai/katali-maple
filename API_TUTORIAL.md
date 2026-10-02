@@ -18,6 +18,11 @@ $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
 
 `KATALI_API_MODEL` supplies the default model, so clients do not need to send a local Windows path. An explicit `model` field still overrides it.
 
+`KATALI_TOOL_ROOT` selects the default workspace for file and repository tools.
+The desktop chat starts with its own folder as the workspace and lets you pick a
+different folder with **Workspace...**. A client can select the same environment
+explicitly by sending a `workspace` field containing an existing directory path.
+
 The server binds to `127.0.0.1` only.
 
 The server loads the configured model once at startup and reuses the persistent native worker for subsequent requests.
@@ -35,6 +40,7 @@ CUDA mode should report `cpu_only: false` and `cuda_device_usable: true`.
 ```powershell
 $body = @{
   model = "maple"
+  workspace = (Get-Location).Path
   messages = @(
     @{ role = "user"; content = "Say hello in one short sentence." }
   )
@@ -91,7 +97,10 @@ Invoke-RestMethod `
   -Body $body
 ```
 
-File tools are limited to the workspace directory containing the launcher.
+File tools are limited to the selected workspace directory. Every path is
+resolved inside that directory, so Maple creates and edits files in the same
+environment shown by the chat GUI. If `workspace` is omitted, the server uses
+`KATALI_TOOL_ROOT` (the launcher directory by default).
 `edit_file` performs controlled search-and-replace and reports the replacement
 count. It accepts `path`, `find`, `replace`, and optional `replace_all` fields.
 `search_files` searches text files under the workspace. `git_status` and
