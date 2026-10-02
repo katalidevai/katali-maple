@@ -130,6 +130,26 @@ fn http_request(method: &str, path: &str, body: Option<&str>) -> Result<String, 
     Ok(content.to_string())
 }
 
+fn chat_request_with_worker_retry(body: &str) -> Result<String, String> {
+    let mut last_error = String::new();
+    for _ in 0..180 {
+        match http_request("POST", "/v1/chat/completions", Some(body)) {
+            Ok(response) => return Ok(response),
+            Err(error)
+                if error.contains("tools require a persistent API worker")
+                    || error.contains("persistent worker failed") =>
+            {
+                last_error = error;
+                std::thread::sleep(Duration::from_secs(1));
+            }
+            Err(error) => return Err(error),
+        }
+    }
+    Err(format!(
+        "The model worker did not become ready for tool calls within 180 seconds: {last_error}"
+    ))
+}
+
 fn api_ready() -> bool {
     http_request("GET", "/health", None).is_ok()
 }
@@ -445,7 +465,7 @@ fn send_chat(
         "tool_choice": "auto",
         "max_tokens": 512
     });
-    let body = http_request("POST", "/v1/chat/completions", Some(&request.to_string()))?;
+    let body = chat_request_with_worker_retry(&request.to_string())?;
     let raw: Value = serde_json::from_str(&body).map_err(|e| format!("Invalid API JSON: {e}"))?;
     let answer = raw
         .pointer("/choices/0/message/content")
