@@ -70,7 +70,9 @@ final answer. The built-in tools are `task_plan`, `task_checkpoint`,
 `edit_file`, `apply_patch`, `create_file`, `make_directory`, `copy_file`,
 `move_file`, `git_status`, `git_diff`, `git_log`, `git_show`,
 `git_diff_check`, `build_project`, `run_python`, `run_node`, `run_rust`,
-`run_go`, `run_cargo`, `run_tauri`, `run_tests`, and `delete_file`.
+`run_go`, `run_cargo`, `run_tauri`, `project_info`, `format_project`,
+`lint_project`, `test_project`, `diff_review`, `run_process`,
+`process_status`, `cancel_process`, `run_tests`, and `delete_file`.
 
 Example:
 
@@ -125,6 +127,11 @@ with Python isolated mode.
 one `.rs` file, and `run_go` runs one `.go` file. `run_cargo` accepts only
 `check`, `test`, `build`, `run`, or `metadata`; `run_tauri` accepts only
 `build`, `check`, or `info`.
+`project_info` detects common project manifests. `format_project`,
+`lint_project`, and `test_project` select allowlisted commands from those
+manifests. `diff_review` summarizes Git changes. `run_process` starts a
+bounded Python, Node, Rust, Go, Cargo, or Tauri process; poll it with
+`process_status` and stop it with `cancel_process`.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl
