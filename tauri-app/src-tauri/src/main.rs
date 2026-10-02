@@ -458,6 +458,7 @@ fn send_chat(
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .manage(RuntimeState::default())
         .invoke_handler(tauri::generate_handler![health, send_chat])
         .run(tauri::generate_context!())

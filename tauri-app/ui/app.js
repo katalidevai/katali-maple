@@ -5,6 +5,8 @@ const workspaceBox = document.querySelector('#workspace');
 const sendButton = document.querySelector('#send');
 const statusText = document.querySelector('#status-text');
 const status = document.querySelector('.status');
+const browseButton = document.querySelector('#browse');
+const dialogOpen = window.__TAURI__?.dialog?.open;
 let conversationId = `tauri-${Date.now()}`;
 let resetNext = false;
 
@@ -23,6 +25,16 @@ async function checkHealth() {
   catch (e) { setStatus(String(e), 'error'); }
 }
 document.querySelector('#health').addEventListener('click', checkHealth);
+browseButton.addEventListener('click', async () => {
+  if (!dialogOpen) { setStatus('Folder picker unavailable', 'error'); return; }
+  try {
+    const selected = await dialogOpen({ directory: true, multiple: false, title: 'Select workspace folder' });
+    if (typeof selected === 'string' && selected) {
+      workspaceBox.value = selected;
+      await checkHealth();
+    }
+  } catch (e) { setStatus(String(e), 'error'); }
+});
 document.querySelector('#clear').addEventListener('click', () => { messages.innerHTML = ''; conversationId = `tauri-${Date.now()}`; resetNext = true; addMessage('assistant', 'History cleared. What should we do next?'); });
 document.querySelector('#composer').addEventListener('submit', async (event) => {
   event.preventDefault(); const message = promptBox.value.trim(); if (!message || !invoke) return;
