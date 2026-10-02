@@ -28,7 +28,7 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 - `run-katali-chat.bat` — starts the API and opens the desktop chat
 - `run-lfm2-chat.bat` — starts the LFM2-24B-A2B API and opens the same chat
 - `run-katali-tauri.bat` — starts the Rust/Tauri desktop client
-- `tauri-app/` — Cargo/Tauri source for the converted desktop client
+- `katali-tauri.exe` — Rust/Tauri desktop chat client
 - `katali-maple-gui.zip` — original packaged GUI release
 - `katali_cuda.dll` — optional native CUDA backend
 - `cudart64_13.dll` — CUDA runtime dependency
@@ -84,11 +84,11 @@ To try the LFM2 build in the GUI, place
 double-click `run-lfm2-chat.bat`. The original Maple launcher keeps its Maple
 model and tuning defaults.
 
-The `tauri-app` directory is the Cargo/Tauri desktop client. It keeps the
-native Katali engine and CUDA path for performance while moving the desktop
-window, engine lifecycle, workspace binding, conversation reset, and tool
-request bridge into Rust. Run `cargo tauri dev` from `tauri-app` or use
-`run-katali-tauri.bat` after the release build.
+The `katali-tauri.exe` release client keeps the native Katali engine and CUDA
+path for performance while moving the desktop window, engine lifecycle,
+workspace binding, conversation reset, and tool request bridge into Rust. Use
+`run-katali-tauri.bat` to launch it. The Cargo/Tauri development checkout is
+kept separately and is not part of this binary-only release repository.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:
