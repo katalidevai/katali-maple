@@ -56,14 +56,20 @@ Invoke-RestMethod `
 
 The generated text is returned in `choices[0].message.content`.
 
+Requests may include `conversation_id` to persist task history across turns.
+Set `reset: true` to start that conversation over. Katali stores bounded
+conversation and orchestration state in the user's temporary directory, keyed
+by workspace and conversation ID.
+
 ## 5. Use Katali tools
 
 Send an OpenAI-style `tools` array to enable the local tool loop. Katali lets
 Maple call a tool, executes it, sends the result back to Maple, and returns the
-final answer. The built-in tools are `calculator`, `search_files`, `list_files`,
-`read_file`, `file_info`, `edit_file`, `create_file`,
-`make_directory`, `copy_file`, `move_file`, `git_status`, `git_diff`,
-`git_log`, `git_show`, `git_diff_check`, `run_tests`, and `delete_file`.
+final answer. The built-in tools are `task_plan`, `task_checkpoint`,
+`calculator`, `search_files`, `list_files`, `read_file`, `file_info`,
+`edit_file`, `apply_patch`, `create_file`, `make_directory`, `copy_file`,
+`move_file`, `git_status`, `git_diff`, `git_log`, `git_show`,
+`git_diff_check`, `build_project`, `run_tests`, and `delete_file`.
 
 Example:
 
@@ -106,9 +112,12 @@ environment shown by the chat GUI. If `workspace` is omitted, the server uses
 count. It accepts `path`, `find`, `replace`, and optional `replace_all` fields.
 `search_files` searches text files under the workspace. `git_status`,
 `git_diff`, `git_log`, `git_show`, and `git_diff_check` are read-only repository
-tools. `copy_file` and `move_file` stay inside the workspace; replacing an existing destination
-requires both `overwrite: true` and `confirm: true`. `run_tests` only accepts
-the allowlisted `selftest` suite.
+tools. `copy_file` and `move_file` stay inside the workspace; replacing an
+existing destination requires both `overwrite: true` and `confirm: true`.
+`build_project` accepts only `engine`, `chat`, or `all` and invokes the bundled
+build scripts from the selected workspace. `apply_patch` accepts exact
+`*** Update File:` blocks and keeps every changed path inside the workspace.
+`run_tests` only accepts the allowlisted `selftest` suite.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl
