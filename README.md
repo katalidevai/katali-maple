@@ -26,6 +26,7 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 - `katali-lab.exe` — native Katali engine and local HTTP API server
 - `katali-chat.exe` — lightweight native Windows desktop chat interface
 - `run-katali-chat.bat` — starts the API and opens the desktop chat
+- `run-lfm2-chat.bat` — starts the LFM2-24B-A2B API and opens the same chat
 - `katali-maple-gui.zip` — original packaged GUI release
 - `katali_cuda.dll` — optional native CUDA backend
 - `cudart64_13.dll` — CUDA runtime dependency
@@ -75,6 +76,11 @@ Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
 `run-katali-chat.bat`. The launcher starts the optimized API and opens the chat
 window. No Python, .NET runtime, browser, or separate GUI installation is
 required.
+
+To try the LFM2 build in the GUI, place
+`LFM2-24B-A2B-Q4_K_M.gguf` at `C:\models\LFM2-24B-A2B-Q4_K_M.gguf` and
+double-click `run-lfm2-chat.bat`. The original Maple launcher keeps its Maple
+model and tuning defaults.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:
