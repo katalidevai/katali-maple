@@ -142,20 +142,233 @@ fn ensure_api(app: &AppHandle, state: &RuntimeState, workspace: &str) -> Result<
     Err("Katali API did not become ready within 30 seconds".to_string())
 }
 
+fn function_tool(name: &str, description: &str, properties: Value, required: &[&str]) -> Value {
+    json!({
+        "type": "function",
+        "function": {
+            "name": name,
+            "description": description,
+            "parameters": {
+                "type": "object",
+                "properties": properties,
+                "required": required
+            }
+        }
+    })
+}
+
 fn tool_definitions() -> Value {
     json!([
-        {"type":"function","function":{"name":"calculator","description":"Evaluate arithmetic expressions.","parameters":{"type":"object","properties":{"expression":{"type":"string"}},"required":["expression"]}}},
-        {"type":"function","function":{"name":"list_files","description":"List files and folders inside the selected workspace.","parameters":{"type":"object","properties":{"path":{"type":"string"},"recursive":{"type":"boolean"}},"required":["path"]}}},
-        {"type":"function","function":{"name":"read_file","description":"Read a text file inside the selected workspace.","parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
-        {"type":"function","function":{"name":"create_file","description":"Create or replace a file inside the selected workspace.","parameters":{"type":"object","properties":{"path":{"type":"string"},"content":{"type":"string"}},"required":["path","content"]}}},
-        {"type":"function","function":{"name":"edit_file","description":"Apply a controlled search and replace inside a workspace file.","parameters":{"type":"object","properties":{"path":{"type":"string"},"find":{"type":"string"},"replace":{"type":"string"},"replace_all":{"type":"boolean"}},"required":["path","find","replace"]}}},
-        {"type":"function","function":{"name":"apply_patch","description":"Apply precise Update File patches inside the workspace.","parameters":{"type":"object","properties":{"patch":{"type":"string"}},"required":["patch"]}}},
-        {"type":"function","function":{"name":"delete_file","description":"Delete one file after explicit confirmation=true.","parameters":{"type":"object","properties":{"path":{"type":"string"},"confirm":{"type":"boolean"}},"required":["path","confirm"]}}},
-        {"type":"function","function":{"name":"project_info","description":"Inspect project manifests and detected languages.","parameters":{"type":"object","properties":{}}}},
-        {"type":"function","function":{"name":"run_cargo","description":"Run an allowlisted Cargo command: check, test, build, run, or metadata.","parameters":{"type":"object","properties":{"command":{"type":"string"}},"required":["command"]}}},
-        {"type":"function","function":{"name":"run_tauri","description":"Run an allowlisted Tauri command: check, build, or info.","parameters":{"type":"object","properties":{"command":{"type":"string"}},"required":["command"]}}},
-        {"type":"function","function":{"name":"task_plan","description":"Create a short plan for a multi-step task.","parameters":{"type":"object","properties":{"steps":{"type":"array","items":{"type":"string"}}},"required":["steps"]}}},
-        {"type":"function","function":{"name":"task_checkpoint","description":"Record progress and the next checkpoint.","parameters":{"type":"object","properties":{"completed":{"type":"string"},"next":{"type":"string"}},"required":["completed","next"]}}}
+        function_tool(
+            "task_plan",
+            "Create a short plan for a multi-step task.",
+            json!({"steps":{"type":"array","items":{"type":"string"}}}),
+            &["steps"]
+        ),
+        function_tool(
+            "task_checkpoint",
+            "Record progress and the next checkpoint.",
+            json!({"completed":{"type":"string"},"next":{"type":"string"}}),
+            &["completed", "next"]
+        ),
+        function_tool(
+            "calculator",
+            "Evaluate arithmetic expressions.",
+            json!({"expression":{"type":"string"}}),
+            &["expression"]
+        ),
+        function_tool(
+            "search_files",
+            "Search text files inside the selected workspace.",
+            json!({"path":{"type":"string"},"query":{"type":"string"},"max_results":{"type":"integer"}}),
+            &["path", "query"]
+        ),
+        function_tool(
+            "list_files",
+            "List files and folders inside the selected workspace.",
+            json!({"path":{"type":"string"},"recursive":{"type":"boolean"}}),
+            &["path"]
+        ),
+        function_tool(
+            "read_file",
+            "Read a text file inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "file_info",
+            "Inspect metadata for a file or directory inside the workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "edit_file",
+            "Apply a controlled search and replace inside a workspace file.",
+            json!({"path":{"type":"string"},"find":{"type":"string"},"replace":{"type":"string"},"replace_all":{"type":"boolean"}}),
+            &["path", "find", "replace"]
+        ),
+        function_tool(
+            "apply_patch",
+            "Apply precise Update File patches inside the workspace.",
+            json!({"patch":{"type":"string"}}),
+            &["patch"]
+        ),
+        function_tool(
+            "create_file",
+            "Create or replace a file inside the selected workspace.",
+            json!({"path":{"type":"string"},"content":{"type":"string"}}),
+            &["path", "content"]
+        ),
+        function_tool(
+            "make_directory",
+            "Create a directory inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "copy_file",
+            "Copy a file inside the selected workspace.",
+            json!({"source":{"type":"string"},"destination":{"type":"string"},"overwrite":{"type":"boolean"},"confirm":{"type":"boolean"}}),
+            &["source", "destination"]
+        ),
+        function_tool(
+            "move_file",
+            "Move a file inside the selected workspace.",
+            json!({"source":{"type":"string"},"destination":{"type":"string"},"overwrite":{"type":"boolean"},"confirm":{"type":"boolean"}}),
+            &["source", "destination"]
+        ),
+        function_tool(
+            "git_status",
+            "Show repository status for the selected workspace.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "git_diff",
+            "Show repository changes for the selected workspace.",
+            json!({"path":{"type":"string"},"staged":{"type":"boolean"}}),
+            &[]
+        ),
+        function_tool(
+            "git_log",
+            "Show recent repository history.",
+            json!({"max_count":{"type":"integer"},"path":{"type":"string"}}),
+            &[]
+        ),
+        function_tool(
+            "git_show",
+            "Show a repository revision or object.",
+            json!({"revision":{"type":"string"}}),
+            &["revision"]
+        ),
+        function_tool(
+            "git_diff_check",
+            "Check repository changes for whitespace errors.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "build_project",
+            "Build the selected project using an allowlisted target: engine, chat, or all.",
+            json!({"engine":{"type":"string"}}),
+            &["engine"]
+        ),
+        function_tool(
+            "run_python",
+            "Run one Python file inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "run_node",
+            "Run one JavaScript file inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "run_rust",
+            "Compile and run one Rust source file inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "run_go",
+            "Run one Go source file inside the selected workspace.",
+            json!({"path":{"type":"string"}}),
+            &["path"]
+        ),
+        function_tool(
+            "run_cargo",
+            "Run an allowlisted Cargo command: check, test, build, run, or metadata.",
+            json!({"command":{"type":"string"}}),
+            &["command"]
+        ),
+        function_tool(
+            "run_tauri",
+            "Run an allowlisted Tauri command: check, build, or info.",
+            json!({"command":{"type":"string"}}),
+            &["command"]
+        ),
+        function_tool(
+            "project_info",
+            "Inspect project manifests and detected languages.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "format_project",
+            "Format files using the detected project formatter.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "lint_project",
+            "Run the detected project linter using an allowlist.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "test_project",
+            "Run the detected project test command using an allowlist.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "diff_review",
+            "Summarize Git changes for review.",
+            json!({}),
+            &[]
+        ),
+        function_tool(
+            "run_process",
+            "Start a bounded allowlisted Python, Node, Rust, Go, Cargo, or Tauri process.",
+            json!({"kind":{"type":"string"},"path":{"type":"string"},"command":{"type":"string"}}),
+            &["kind"]
+        ),
+        function_tool(
+            "process_status",
+            "Read the status of a bounded process.",
+            json!({"process_id":{"type":"integer"}}),
+            &["process_id"]
+        ),
+        function_tool(
+            "cancel_process",
+            "Stop a bounded process.",
+            json!({"process_id":{"type":"integer"}}),
+            &["process_id"]
+        ),
+        function_tool(
+            "run_tests",
+            "Run an allowlisted test suite.",
+            json!({"suite":{"type":"string"}}),
+            &["suite"]
+        ),
+        function_tool(
+            "delete_file",
+            "Delete one file after explicit confirmation=true.",
+            json!({"path":{"type":"string"},"confirm":{"type":"boolean"}}),
+            &["path", "confirm"]
+        )
     ])
 }
 
