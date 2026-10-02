@@ -8,3 +8,10 @@
 !katali-logo.jpg
 !katali_cuda.dll
 !cudart64_13.dll
+!katali-chat.exe
+!run-katali-chat.bat
+!start-maple-api.bat
+!test-maple-api.ps1
+!gui-src/
+!gui-src/katali-chat.c
+!gui-src/build-chat.bat

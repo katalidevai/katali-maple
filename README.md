@@ -19,7 +19,10 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 ## Included
 
 - `katali-lab.exe` — native Katali engine and local HTTP API server
-- `katali-maple-gui.zip` — polished Windows desktop chat interface and Katali logo
+- `katali-chat.exe` — lightweight native Windows desktop chat interface
+- `run-katali-chat.bat` — starts the API and opens the desktop chat
+- `gui-src/` — C source and build script for the desktop chat
+- `katali-maple-gui.zip` — original packaged GUI release
 - `katali_cuda.dll` — optional native CUDA backend
 - `cudart64_13.dll` — CUDA runtime dependency
 - [API_TUTORIAL.md](API_TUTORIAL.md) — local OpenAI-compatible API instructions
@@ -42,11 +45,16 @@ The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with 
 
 ## Desktop GUI
 
-Install the .NET 9 Desktop Runtime, extract `katali-maple-gui.zip`, keep the
-GUI executable and `katali-logo.jpg` beside `katali-lab.exe`, then double-click
-the GUI. Choose `maple-tq2_0.gguf` from
-the model picker and use the Settings panel to enable the verified native CUDA
-attention and LM-head path.
+The included `katali-chat.exe` is a native C/Win32 desktop chat window. It has
+a conversation view, multiline prompt box, Send button, and Clear history
+button. It talks to the local OpenAI-compatible API on port `8119`.
+
+Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
+`run-katali-chat.bat`. The launcher starts the optimized API and opens the chat
+window. No Python, .NET runtime, browser, or separate GUI installation is
+required.
+
+To build the GUI from source with MinGW-w64, run `gui-src\build-chat.bat`.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:
@@ -84,7 +92,7 @@ When KATALI_API_MODEL is set, the API opens Maple once and reuses a persistent w
 ```powershell
 $env:KATALI_CUDA_MOE = "1"
 $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
-.\katali-lab.exe api --port 8080
+.\katali-lab.exe api --port 8119
 ```
 
 Then follow [API_TUTORIAL.md](API_TUTORIAL.md).

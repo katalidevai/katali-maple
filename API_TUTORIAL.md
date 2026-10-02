@@ -13,7 +13,7 @@ PowerShell:
 ```powershell
 $env:KATALI_CUDA_MOE = "1"
 $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
-.\katali-lab.exe api --port 8080
+.\katali-lab.exe api --port 8119
 ```
 
 `KATALI_API_MODEL` supplies the default model, so clients do not need to send a local Windows path. An explicit `model` field still overrides it.
@@ -25,7 +25,7 @@ The server loads the configured model once at startup and reuses the persistent 
 ## 2. Check health
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8080/health
+Invoke-RestMethod http://127.0.0.1:8119/health
 ```
 
 CUDA mode should report `cpu_only: false` and `cuda_device_usable: true`.
@@ -42,7 +42,7 @@ $body = @{
 } | ConvertTo-Json -Depth 5
 
 Invoke-RestMethod `
-  -Uri http://127.0.0.1:8080/v1/chat/completions `
+  -Uri http://127.0.0.1:8119/v1/chat/completions `
   -Method Post `
   -ContentType "application/json" `
   -Body $body
@@ -53,7 +53,7 @@ The generated text is returned in `choices[0].message.content`.
 ## 4. Use curl
 
 ```powershell
-curl.exe -X POST http://127.0.0.1:8080/v1/chat/completions `
+curl.exe -X POST http://127.0.0.1:8119/v1/chat/completions `
   -H "Content-Type: application/json" `
   --data-raw '{"messages":[{"role":"user","content":"What is 2 plus 2?"}],"max_tokens":8}'
 ```
@@ -62,6 +62,6 @@ Streaming is available with `"stream":true`; the response uses `text/event-strea
 
 ## Troubleshooting
 
-- If port 8080 is busy, choose another port, such as `--port 8091`.
+- If port 8119 is busy, choose another available port and set `KATALI_API_PORT` for the launcher and client.
 - If health reports CPU-only mode, confirm the NVIDIA driver, `katali_cuda.dll`, and `cudart64_13.dll` are beside the executable.
 - Keep model weights outside this repository; the API reads them from the path in `KATALI_API_MODEL`.
