@@ -69,7 +69,7 @@ final answer. The built-in tools are `task_plan`, `task_checkpoint`,
 `calculator`, `search_files`, `list_files`, `read_file`, `file_info`,
 `edit_file`, `apply_patch`, `create_file`, `make_directory`, `copy_file`,
 `move_file`, `git_status`, `git_diff`, `git_log`, `git_show`,
-`git_diff_check`, `build_project`, `run_tests`, and `delete_file`.
+`git_diff_check`, `build_project`, `run_python`, `run_tests`, and `delete_file`.
 
 Example:
 
@@ -118,6 +118,8 @@ existing destination requires both `overwrite: true` and `confirm: true`.
 build scripts from the selected workspace. `apply_patch` accepts exact
 `*** Update File:` blocks and keeps every changed path inside the workspace.
 `run_tests` only accepts the allowlisted `selftest` suite.
+`run_python` only accepts `.py` files and runs them from the selected workspace
+with Python isolated mode.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl
