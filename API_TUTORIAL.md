@@ -50,6 +50,49 @@ Invoke-RestMethod `
 
 The generated text is returned in `choices[0].message.content`.
 
+## 5. Use Katali tools
+
+Send an OpenAI-style `tools` array to enable the local tool loop. Katali lets
+Maple call a tool, executes it, sends the result back to Maple, and returns the
+final answer. The built-in tools are `calculator`, `list_files`, `read_file`,
+`create_file`, and `delete_file`.
+
+Example:
+
+```powershell
+$body = @{
+  model = "maple"
+  messages = @(
+    @{ role = "user"; content = "Calculate 37.2% of 8412 using the calculator tool." }
+  )
+  tools = @(
+    @{
+      type = "function"
+      function = @{
+        name = "calculator"
+        description = "Evaluate arithmetic or a percentage."
+        parameters = @{
+          type = "object"
+          properties = @{ expression = @{ type = "string" } }
+          required = @("expression")
+        }
+      }
+    }
+  )
+  tool_choice = "auto"
+  max_tokens = 64
+} | ConvertTo-Json -Depth 10
+
+Invoke-RestMethod `
+  -Uri http://127.0.0.1:8119/v1/chat/completions `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body $body
+```
+
+File tools are limited to the workspace directory containing the launcher.
+`delete_file` refuses to run unless its arguments include `confirm: true`.
+
 ## 4. Use curl
 
 ```powershell

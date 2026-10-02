@@ -49,6 +49,11 @@ The included `katali-chat.exe` is a native C/Win32 desktop chat window. It has
 a conversation view, multiline prompt box, Send button, and Clear history
 button. It talks to the local OpenAI-compatible API on port `8119`.
 
+The chat sends the built-in Katali tools to Maple automatically. The available
+tools are calculator, list_files, read_file, create_file, and guarded
+delete_file. File tools are restricted to this project workspace, and deletion
+requires `confirm=true`.
+
 Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
 `run-katali-chat.bat`. The launcher starts the optimized API and opens the chat
 window. No Python, .NET runtime, browser, or separate GUI installation is

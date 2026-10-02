@@ -26,6 +26,13 @@ typedef struct ChatResult {
 static HWND g_log, g_input, g_send, g_clear, g_status;
 static HFONT g_font;
 
+static const char TOOL_DEFS[] =
+    "[{\"type\":\"function\",\"function\":{\"name\":\"calculator\",\"description\":\"Evaluate arithmetic or a percentage.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"expression\":{\"type\":\"string\"}},\"required\":[\"expression\"]}}},"
+    "{\"type\":\"function\",\"function\":{\"name\":\"list_files\",\"description\":\"List files and folders under the Katali workspace.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"},\"recursive\":{\"type\":\"boolean\"}},\"required\":[\"path\"]}}},"
+    "{\"type\":\"function\",\"function\":{\"name\":\"read_file\",\"description\":\"Read a text file under the Katali workspace.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"}},\"required\":[\"path\"]}}},"
+    "{\"type\":\"function\",\"function\":{\"name\":\"create_file\",\"description\":\"Create or replace a file under the Katali workspace.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"},\"content\":{\"type\":\"string\"}},\"required\":[\"path\",\"content\"]}}},"
+    "{\"type\":\"function\",\"function\":{\"name\":\"delete_file\",\"description\":\"Delete one file under the Katali workspace after explicit confirmation.\",\"parameters\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"},\"confirm\":{\"type\":\"boolean\"}},\"required\":[\"path\",\"confirm\"]}}}]";
+
 static wchar_t *wdup(const wchar_t *s) {
     size_t n = s ? wcslen(s) : 0;
     wchar_t *p = (wchar_t *)calloc(n + 1, sizeof(wchar_t));
@@ -152,11 +159,12 @@ static wchar_t *chat_request(const wchar_t *prompt, wchar_t **error_out) {
     u8 = utf8_from_wide(prompt);
     esc = json_escape(u8);
     if (!esc) goto fail;
-    json_n = strlen(esc) + 160;
+    json_n = strlen(esc) + strlen(TOOL_DEFS) + 256;
     json = (char *)malloc(json_n);
     if (!json) goto fail;
     _snprintf_s(json, json_n, _TRUNCATE,
-                "{\"model\":\"maple\",\"messages\":[{\"role\":\"user\",\"content\":\"%s\"}],\"max_tokens\":512}", esc);
+                "{\"model\":\"maple\",\"messages\":[{\"role\":\"user\",\"content\":\"%s\"}],\"tools\":%s,\"tool_choice\":\"auto\",\"max_tokens\":512}",
+                esc, TOOL_DEFS);
 
     ses = WinHttpOpen(L"KataliChat/1.0", WINHTTP_ACCESS_TYPE_NO_PROXY,
                       WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);

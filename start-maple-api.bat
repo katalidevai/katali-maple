@@ -9,6 +9,7 @@ set "KATALI_MOE_ATTN_GPU=1"
 set "KATALI_MOE_LM_GPU=1"
 set "KATALI_CUDA_GQA=1"
 set "KATALI_API_MODEL=C:\models\maple-tq2_0.gguf"
+set "KATALI_TOOL_ROOT=%~dp0"
 
 set "KATALI_API_PORT=%KATALI_API_PORT%"
 if not defined KATALI_API_PORT set "KATALI_API_PORT=8119"
