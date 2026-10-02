@@ -19,13 +19,14 @@ needs about 14.4 GB on disk and uses roughly 2B active parameters per token;
 see the LFM2 section in [BENCHMARK.md](BENCHMARK.md) for the measured CUDA
 throughput and launch flags.
 
-Binary-only release of the Katali native engine with Maple `TQ2_0` support.
+Katali native engine release with Maple `TQ2_0` support and a Rust/Tauri
+desktop client.
 
 ## Included
 
 - `katali-lab.exe` — native Katali engine and local HTTP API server
-- `katali-chat.exe` — lightweight native Windows desktop chat interface
-- `run-katali-chat.bat` — starts the API and opens the desktop chat
+- `katali-chat.exe` — legacy Windows desktop chat interface
+- `run-katali-chat.bat` — starts the legacy chat client
 - `run-lfm2-chat.bat` — starts the LFM2-24B-A2B API and opens the same chat
 - `run-katali-tauri.bat` — starts the Rust/Tauri desktop client
 - `katali-tauri.exe` — Rust/Tauri desktop chat client
@@ -35,9 +36,9 @@ Binary-only release of the Katali native engine with Maple `TQ2_0` support.
 - [API_TUTORIAL.md](API_TUTORIAL.md) — local OpenAI-compatible API instructions
 - [BENCHMARK.md](BENCHMARK.md) — Maple CPU/CUDA measurements
 
-The GitHub release contains compiled binaries and runtime documentation only.
-It does not include engine source code, GUI source code, patches, model weights,
-or the development checkout.
+The GitHub release contains compiled binaries, runtime documentation, and the
+Rust/Tauri client source under `tauri-app/`. Model weights and the native engine
+development checkout remain outside the release repository.
 
 ## Requirements
 
@@ -54,9 +55,10 @@ The engine runs CPU-only when CUDA is unavailable. CUDA MoE mode is opt-in with 
 
 ## Desktop GUI
 
-The included `katali-chat.exe` is a native C/Win32 desktop chat window. It has
-a conversation view, multiline prompt box, Send button, and Clear history
-button. It talks to the local OpenAI-compatible API on port `8119`.
+The primary desktop client is `katali-tauri.exe`, built with Rust, Cargo, and
+Tauri. It has a conversation view, multiline prompt box, Send button, Clear
+history button, CUDA status, and workspace field. It talks to the local
+OpenAI-compatible API on port `8119`.
 
 The chat sends the built-in Katali tools to Maple automatically. The available
 tools include task_plan, task_checkpoint, calculator, search_files, list_files,
@@ -69,26 +71,25 @@ delete_file. File
 tools are restricted to one selected workspace, and deletion requires
 `confirm=true`. Maple can also create directories, copy and move files, inspect
 metadata, and inspect Git history and diff checks.
-The **Workspace...** button chooses the folder that Maple may read, create,
+The workspace field chooses the folder that Maple may read, create,
 edit, search, and inspect with Git. The selected folder is sent to the API with
 every chat request, so the model and tools share the same environment. The
 default is the folder containing `katali-chat.exe`.
 
 Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
-`run-katali-chat.bat`. The launcher starts the optimized API and opens the chat
-window. No Python, .NET runtime, browser, or separate GUI installation is
-required.
+`run-katali-tauri.bat`. The launcher opens the Rust/Tauri client, which starts
+the optimized local API when it first checks health. No Python, .NET runtime,
+browser, or separate GUI installation is required.
 
 To try the LFM2 build in the GUI, place
 `LFM2-24B-A2B-Q4_K_M.gguf` at `C:\models\LFM2-24B-A2B-Q4_K_M.gguf` and
 double-click `run-lfm2-chat.bat`. The original Maple launcher keeps its Maple
 model and tuning defaults.
 
-The `katali-tauri.exe` release client keeps the native Katali engine and CUDA
-path for performance while moving the desktop window, engine lifecycle,
-workspace binding, conversation reset, and tool request bridge into Rust. Use
-`run-katali-tauri.bat` to launch it. The Cargo/Tauri development checkout is
-kept separately and is not part of this binary-only release repository.
+The `katali-tauri.exe` release client moves the desktop window, engine
+lifecycle, workspace binding, conversation reset, and tool request bridge into
+Rust. Use `run-katali-tauri.bat` to launch it. The Cargo/Tauri development
+project is in `tauri-app/`.
 
 For faster Maple decode on supported NVIDIA GPUs, enable the verified LM-head
 resident path in addition to CUDA MoE:

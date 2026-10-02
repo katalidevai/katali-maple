@@ -27,6 +27,23 @@ The server binds to `127.0.0.1` only.
 
 The server loads the configured model once at startup and reuses the persistent native worker for subsequent requests.
 
+## Rust/Tauri desktop client
+
+The recommended desktop client is the Rust/Tauri application. For the
+published binary, double-click `run-katali-tauri.bat`; it launches
+`katali-tauri.exe`, which starts the local API when needed. To develop the
+client from source:
+
+```powershell
+cd tauri-app
+cargo tauri dev
+```
+
+The Cargo project is under `tauri-app/src-tauri`. The Tauri window sends the
+same OpenAI-compatible requests documented below, including the selected
+workspace and the built-in tool definitions. `cargo tauri build --no-bundle`
+produces `tauri-app/src-tauri/target/release/katali-tauri.exe`.
+
 ## 2. Check health
 
 ```powershell

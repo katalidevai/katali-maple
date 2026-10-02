@@ -1,9 +1,9 @@
 # Katali Maple Tauri client
 
-This is the Rust/Tauri desktop conversion of the Katali chat client. The
-performance-critical native Katali engine remains the bundled `katali-lab.exe`
-and CUDA DLL; the Rust process owns the desktop window, engine lifecycle, local
-API bridge, workspace selection, conversation reset, and tool schema.
+This is the Rust/Tauri desktop client for Katali Maple. The Rust process owns
+the desktop window, engine lifecycle, local API bridge, workspace selection,
+conversation reset, and tool schema while the release uses the bundled Katali
+runtime and optional CUDA backend for model execution.
 
 ## Development
 
