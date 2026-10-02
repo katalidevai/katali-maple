@@ -54,7 +54,8 @@ The chat sends the built-in Katali tools to Maple automatically. The available
 tools include task_plan, task_checkpoint, calculator, search_files, list_files,
 read_file, file_info, edit_file, apply_patch, create_file, make_directory,
 copy_file, move_file, git_status, git_diff, git_log, git_show,
-git_diff_check, build_project, run_python, run_tests, and guarded delete_file. File
+git_diff_check, build_project, run_python, run_node, run_rust, run_go, run_cargo,
+run_tauri, run_tests, and guarded delete_file. File
 tools are restricted to one selected workspace, and deletion requires
 `confirm=true`. Maple can also create directories, copy and move files, inspect
 metadata, and inspect Git history and diff checks.

@@ -69,7 +69,8 @@ final answer. The built-in tools are `task_plan`, `task_checkpoint`,
 `calculator`, `search_files`, `list_files`, `read_file`, `file_info`,
 `edit_file`, `apply_patch`, `create_file`, `make_directory`, `copy_file`,
 `move_file`, `git_status`, `git_diff`, `git_log`, `git_show`,
-`git_diff_check`, `build_project`, `run_python`, `run_tests`, and `delete_file`.
+`git_diff_check`, `build_project`, `run_python`, `run_node`, `run_rust`,
+`run_go`, `run_cargo`, `run_tauri`, `run_tests`, and `delete_file`.
 
 Example:
 
@@ -120,6 +121,10 @@ build scripts from the selected workspace. `apply_patch` accepts exact
 `run_tests` only accepts the allowlisted `selftest` suite.
 `run_python` only accepts `.py` files and runs them from the selected workspace
 with Python isolated mode.
+`run_node` accepts `.js`, `.mjs`, and `.cjs` files. `run_rust` compiles and runs
+one `.rs` file, and `run_go` runs one `.go` file. `run_cargo` accepts only
+`check`, `test`, `build`, `run`, or `metadata`; `run_tauri` accepts only
+`build`, `check`, or `info`.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl
