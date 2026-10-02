@@ -1,7 +1,7 @@
 # Maple benchmark — **26.485 tok/s latest result**
 
 The latest verified Maple runtime measurement is **26.485 tok/s decode** on an
-NVIDIA RTX 4060 using Katali's native CUDA attention, routed MoE execution, and
+NVIDIA RTX 4060 using Katali's CUDA attention, routed MoE execution, and
 resident LM head. The Manila smoke test returned the correct answer with zero
 GPU fallbacks.
 
@@ -11,7 +11,7 @@ Measured on the development desktop:
 - GPU: NVIDIA GeForce RTX 4060, 8 GB
 - Model: Maple `maple-tq2_0.gguf`, approximately 5.08 GiB on disk
 - Decode sample: 35 tokens
-- Engine: Katali native runtime; no llama.cpp inference path
+- Runtime: Katali bundled runtime; no llama.cpp inference path
 
 The verified run used:
 

@@ -1,7 +1,7 @@
 [package]
 name = "katali-tauri"
 version = "0.1.0"
-description = "Katali Maple native engine desktop chat"
+description = "Katali Maple Rust/Tauri desktop chat"
 authors = ["Katali"]
 edition = "2021"
 

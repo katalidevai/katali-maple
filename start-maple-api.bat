@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-rem Katali native Maple API (OpenAI-compatible loopback server)
+rem Katali Maple API (OpenAI-compatible loopback server)
 if not defined KATALI_CUDA_MOE set "KATALI_CUDA_MOE=1"
 if not defined KATALI_DENSE_GPU set "KATALI_DENSE_GPU=1"
 if not defined KATALI_DENSE_TIER set "KATALI_DENSE_TIER=attn,lm"

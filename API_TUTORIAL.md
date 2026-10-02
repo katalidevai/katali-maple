@@ -13,7 +13,7 @@ PowerShell:
 ```powershell
 $env:KATALI_CUDA_MOE = "1"
 $env:KATALI_API_MODEL = "C:\models\maple-tq2_0.gguf"
-.\katali-lab.exe api --port 8119
+.\start-maple-api.bat
 ```
 
 `KATALI_API_MODEL` supplies the default model, so clients do not need to send a local Windows path. An explicit `model` field still overrides it.
@@ -25,7 +25,7 @@ explicitly by sending a `workspace` field containing an existing directory path.
 
 The server binds to `127.0.0.1` only.
 
-The server loads the configured model once at startup and reuses the persistent native worker for subsequent requests.
+The server loads the configured model once at startup and reuses the persistent runtime worker for subsequent requests.
 
 ## Rust/Tauri desktop client
 
