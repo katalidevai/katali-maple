@@ -13,6 +13,8 @@
 !start-maple-api.bat
 !test-maple-api.ps1
 !run-katali-tauri.bat
-tauri-app/
+!tauri-app/
+!tauri-app/**
+tauri-app/src-tauri/target/
 !katali-tauri.exe
 gui-src/

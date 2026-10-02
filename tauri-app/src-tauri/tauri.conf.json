@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Katali Maple",
+  "version": "0.1.0",
+  "identifier": "com.katali.maple",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Katali Maple",
+        "width": 1120,
+        "height": 760,
+        "minWidth": 760,
+        "minHeight": 540,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src ipc: http://ipc.local http://127.0.0.1:8119; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "resources": [
+      "../../katali-lab.exe",
+      "../../katali_cuda.dll",
+      "../../cudart64_13.dll",
+      "../../katali-logo.jpg"
+    ]
+  }
+}

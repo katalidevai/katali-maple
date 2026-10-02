@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katali Maple</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="mark">K</div><div><strong>Katali Maple</strong><span>Native engine · Tauri desktop</span></div></div>
+      <div class="status"><i id="status-dot"></i><span id="status-text">Starting engine…</span></div>
+    </header>
+    <section class="workspace-row">
+      <label for="workspace">Workspace</label>
+      <input id="workspace" value="." spellcheck="false">
+      <button id="health" class="quiet">Check</button>
+      <button id="clear" class="quiet">Clear history</button>
+    </section>
+    <section id="messages" class="messages" aria-live="polite">
+      <div class="welcome"><h1>What are we building?</h1><p>Ask Katali to inspect files, plan work, edit the workspace, run Cargo or Tauri, and review the result.</p></div>
+    </section>
+    <form id="composer" class="composer">
+      <textarea id="prompt" rows="3" placeholder="Message Katali…" spellcheck="true"></textarea>
+      <div class="composer-foot"><span>Ctrl + Enter to send</span><button id="send" type="submit">Send <b>↵</b></button></div>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
