@@ -54,10 +54,12 @@ The chat sends the built-in Katali tools to Maple automatically. The available
 tools are calculator, search_files, list_files, read_file, edit_file,
 create_file, git_status, git_diff, run_tests, and guarded delete_file. File
 tools are restricted to one selected workspace, and deletion requires
-`confirm=true`. The **Workspace...** button chooses the folder that Maple may
-read, create, edit, search, and inspect with Git. The selected folder is sent
-to the API with every chat request, so the model and tools share the same
-environment. The default is the folder containing `katali-chat.exe`.
+`confirm=true`. Maple can also create directories, copy and move files, inspect
+metadata, and inspect Git history and diff checks.
+The **Workspace...** button chooses the folder that Maple may read, create,
+edit, search, and inspect with Git. The selected folder is sent to the API with
+every chat request, so the model and tools share the same environment. The
+default is the folder containing `katali-chat.exe`.
 
 Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
 `run-katali-chat.bat`. The launcher starts the optimized API and opens the chat

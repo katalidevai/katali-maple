@@ -61,8 +61,9 @@ The generated text is returned in `choices[0].message.content`.
 Send an OpenAI-style `tools` array to enable the local tool loop. Katali lets
 Maple call a tool, executes it, sends the result back to Maple, and returns the
 final answer. The built-in tools are `calculator`, `search_files`, `list_files`,
-`read_file`, `edit_file`, `create_file`, `git_status`, `git_diff`, `run_tests`,
-and `delete_file`.
+`read_file`, `file_info`, `edit_file`, `create_file`,
+`make_directory`, `copy_file`, `move_file`, `git_status`, `git_diff`,
+`git_log`, `git_show`, `git_diff_check`, `run_tests`, and `delete_file`.
 
 Example:
 
@@ -103,9 +104,11 @@ environment shown by the chat GUI. If `workspace` is omitted, the server uses
 `KATALI_TOOL_ROOT` (the launcher directory by default).
 `edit_file` performs controlled search-and-replace and reports the replacement
 count. It accepts `path`, `find`, `replace`, and optional `replace_all` fields.
-`search_files` searches text files under the workspace. `git_status` and
-`git_diff` are read-only repository tools. `run_tests` only accepts the
-allowlisted `selftest` suite.
+`search_files` searches text files under the workspace. `git_status`,
+`git_diff`, `git_log`, `git_show`, and `git_diff_check` are read-only repository
+tools. `copy_file` and `move_file` stay inside the workspace; replacing an existing destination
+requires both `overwrite: true` and `confirm: true`. `run_tests` only accepts
+the allowlisted `selftest` suite.
 `delete_file` refuses to run unless its arguments include `confirm: true`.
 
 ## 4. Use curl
