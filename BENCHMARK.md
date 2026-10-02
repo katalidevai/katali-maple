@@ -32,19 +32,22 @@ round-trips, so their end-to-end response time is longer than one decode pass.
 The native LFM2 path was also exercised with
 `C:\models\LFM2-24B-A2B-Q4_K_M.gguf` (24B total parameters, about 2B active,
 `lfm2moe` architecture). On the same RTX 4060, the best stable short decode
-measurement was **10.7 tok/s** using CUDA routed experts, the resident
-short-convolution projections, and asynchronous MoE execution disabled for
-this workload:
+measurement was **13.4 tok/s sustained over 16 decode tokens** using CUDA
+routed experts, DP4A kernels, asynchronous MoE execution, and a 7 GiB expert
+cache. The dense short-convolution tier is intentionally disabled in this
+configuration because it gives lower end-to-end throughput for LFM2:
 
 ```powershell
 $env:KATALI_CUDA_MOE = "1"
-$env:KATALI_DENSE_GPU = "1"
-$env:KATALI_CUDA_MOE_ASYNC = "0"
+$env:KATALI_DENSE_GPU = "0"
+$env:KATALI_CUDA_MOE_ASYNC = "1"
+$env:KATALI_CUDA_DP4A = "1"
+$env:KATALI_VRAM_GB = "7.0"
+$env:KATALI_EC_WARMUP = "0"
 .\katali-lab.exe generate C:\models\LFM2-24B-A2B-Q4_K_M.gguf `
-  "Capital of the Philippines?" --max 8 --ctx 512
+  "Capital of the Philippines?" --max 16 --ctx 512 --cache-gb 10
 ```
 
-The longer 16-token run measured 7.6 tok/s, so 10.7 tok/s is a short-run
-decode peak rather than a sustained 20 tok/s result. The limiting cost is
-streaming selected expert weights into the 8 GB GPU; reaching 20 tok/s needs a
-larger resident expert set or a fused LFM2 short-convolution/MoE CUDA path.
+The limiting cost is streaming selected expert weights into the 8 GB GPU;
+reaching 20 tok/s needs a larger resident expert set or a fused LFM2
+short-convolution/MoE CUDA path.
