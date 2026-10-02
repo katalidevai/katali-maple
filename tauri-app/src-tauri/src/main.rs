@@ -58,6 +58,45 @@ fn model_path() -> String {
         .unwrap_or_else(|_| r"C:\models\LFM2-24B-A2B-Q4_K_M.gguf".to_string())
 }
 
+fn normalize_workspace(app: &AppHandle, input: &str) -> Result<String, String> {
+    let mut value = input.trim().to_string();
+    while value.len() >= 2
+        && ((value.starts_with('"') && value.ends_with('"'))
+            || (value.starts_with('\'') && value.ends_with('\'')))
+    {
+        value = value[1..value.len() - 1].trim().to_string();
+    }
+
+    let runtime_dir = engine_path(app)
+        .parent()
+        .map(Path::to_path_buf)
+        .or_else(|| std::env::current_dir().ok())
+        .unwrap_or_else(|| PathBuf::from("."));
+    let requested = if value.is_empty() || value == "." {
+        runtime_dir
+    } else {
+        let path = PathBuf::from(&value);
+        if path.is_absolute() {
+            path
+        } else {
+            runtime_dir.join(path)
+        }
+    };
+    let canonical = std::fs::canonicalize(&requested).map_err(|e| {
+        format!(
+            "Workspace does not exist or is not accessible: {} ({e})",
+            requested.display()
+        )
+    })?;
+    if !canonical.is_dir() {
+        return Err(format!(
+            "Workspace is not a directory: {}",
+            canonical.display()
+        ));
+    }
+    Ok(canonical.to_string_lossy().into_owned())
+}
+
 fn http_request(method: &str, path: &str, body: Option<&str>) -> Result<String, String> {
     let mut stream = TcpStream::connect(("127.0.0.1", PORT))
         .map_err(|e| format!("Katali API is not reachable: {e}"))?;
@@ -378,6 +417,7 @@ fn health(
     state: State<'_, RuntimeState>,
     workspace: String,
 ) -> Result<Value, String> {
+    let workspace = normalize_workspace(&app, &workspace)?;
     ensure_api(&app, &state, &workspace)?;
     let body = http_request("GET", "/health", None)?;
     serde_json::from_str(&body).map_err(|e| e.to_string())
@@ -392,6 +432,7 @@ fn send_chat(
     conversation_id: String,
     reset: bool,
 ) -> Result<ChatResult, String> {
+    let workspace = normalize_workspace(&app, &workspace)?;
     ensure_api(&app, &state, &workspace)?;
     let request = json!({
         "model": "maple",
