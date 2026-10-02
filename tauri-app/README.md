@@ -27,6 +27,6 @@ The verified release executable is written to
 `src-tauri/target/release/katali-tauri.exe`. A normal Tauri bundle can be
 produced with `cargo tauri build` when NSIS is installed.
 
-The selected workspace is passed to the native API on every request. File and
-project tools therefore stay inside the same workspace that the user sees in
-the chat window.
+Use the **Browse…** button to choose a workspace folder. The selected workspace
+is passed to the API on every request. File and project tools therefore stay
+inside the same workspace that the user sees in the chat window.

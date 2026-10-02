@@ -67,10 +67,11 @@ delete_file. File
 tools are restricted to one selected workspace, and deletion requires
 `confirm=true`. Maple can also create directories, copy and move files, inspect
 metadata, and inspect Git history and diff checks.
-The workspace field chooses the folder that Maple may read, create,
-edit, search, and inspect with Git. The selected folder is sent to the API with
-every chat request, so the model and tools share the same environment. The
-default is the folder containing `katali-tauri.exe`.
+The workspace field chooses the folder that Maple may read, create, edit, search,
+and inspect with Git. Use **Browse…** to choose a folder or type a path directly.
+The selected folder is sent to the API with every chat request, so the model and
+tools share the same environment. The default is the folder containing
+`katali-tauri.exe`.
 
 Set up the model at `C:\models\maple-tq2_0.gguf`, then double-click
 `run-katali-tauri.bat`. The launcher opens the Rust/Tauri client, which starts
